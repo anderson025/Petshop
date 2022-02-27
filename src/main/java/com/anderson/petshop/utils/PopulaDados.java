@@ -8,9 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.anderson.petshop.domain.Categoria;
+import com.anderson.petshop.domain.Especie;
+import com.anderson.petshop.domain.Pet;
 import com.anderson.petshop.domain.Produto;
+import com.anderson.petshop.domain.Raca;
 import com.anderson.petshop.repository.CategoriaRepository;
+import com.anderson.petshop.repository.EspecieRepository;
+import com.anderson.petshop.repository.PetRepository;
 import com.anderson.petshop.repository.ProdutoRepository;
+import com.anderson.petshop.repository.RacaRepository;
 
 @Component
 public class PopulaDados {
@@ -21,6 +27,14 @@ public class PopulaDados {
 	@Autowired
 	ProdutoRepository produtoRepository;
 	
+	@Autowired
+	RacaRepository racaRepository;
+	
+	@Autowired
+	PetRepository petRepository;
+	
+	@Autowired
+	EspecieRepository especieRepository;
 	
 	@PostConstruct
 	public void cadastrar() {
@@ -44,5 +58,22 @@ public class PopulaDados {
 		
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3,p4));
+		
+		Especie esp1 = new Especie(null, "Cachorro");
+		Especie esp2 = new Especie(null, "Gato");
+		
+		Raca rac1 = new Raca(null, "Shitzu");
+		Raca rac2 = new Raca(null, "Akita");
+		Raca rac3 = new Raca(null, "Persa");
+		
+		Pet pet1 = new Pet(null, "Jonh", 6, esp1, rac1);
+		Pet pet2 = new Pet(null, "Hana", 5, esp1, rac2);
+		Pet pet3 = new Pet(null, "Mewth", 8, esp2, rac3);
+		
+		especieRepository.saveAll(Arrays.asList(esp1, esp2));
+		racaRepository.saveAll(Arrays.asList(rac1,rac2,rac3));
+		
+		petRepository.saveAll(Arrays.asList(pet1,pet2,pet3));
+		
 	}
 }
