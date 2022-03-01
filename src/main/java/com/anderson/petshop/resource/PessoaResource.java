@@ -1,5 +1,7 @@
 package com.anderson.petshop.resource;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,15 @@ public class PessoaResource {
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Pessoa obj = service.find(id);
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	/*
+	 * Implementado endpoint para localizar todas as pessoas
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<?> findAll() {
+		List<Pessoa> obj = service.findAll();
 		return ResponseEntity.ok().body(obj);
 	}
 
