@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.anderson.petshop.domain.Servico;
 import com.anderson.petshop.repository.ServicoRepository;
+import com.anderson.petshop.service.exceptions.DataIntegrityException;
 import com.anderson.petshop.service.exceptions.ObjetoNaoEncontradoException;
 
 @Service
@@ -24,5 +26,25 @@ public class ServicoService {
 	public List<Servico> findAll() {
 		List<Servico> obj = repo.findAll();
 		return obj;
+	}
+	
+	public Servico insert(Servico obj) {
+		obj.setId(null);
+		return repo.save(obj);
+	}
+	
+	public Servico update(Servico obj) {
+		find(obj.getId());
+		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Servico possui produtos, não é possível deletar!");
+		}
+		
 	}
 }
