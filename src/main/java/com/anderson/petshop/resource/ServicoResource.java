@@ -2,6 +2,7 @@ package com.anderson.petshop.resource;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.anderson.petshop.domain.Servico;
+import com.anderson.petshop.dto.PessoaDTO;
+import com.anderson.petshop.dto.ServicoDTO;
 import com.anderson.petshop.service.ServicoService;
 
 @RestController
@@ -33,8 +36,9 @@ public class ServicoResource {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> findAll() {
-		List<Servico> obj = service.findAll();
-		return ResponseEntity.ok().body(obj);
+		List<Servico> list = service.findAll();
+		List<ServicoDTO> listDTO = list.stream().map(obj -> new ServicoDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

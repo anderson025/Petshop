@@ -2,6 +2,7 @@ package com.anderson.petshop.resource;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.anderson.petshop.domain.Pessoa;
+import com.anderson.petshop.dto.PessoaDTO;
 import com.anderson.petshop.service.PessoaService;
 
 @RestController
@@ -33,8 +35,9 @@ public class PessoaResource {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> findAll() {
-		List<Pessoa> obj = service.findAll();
-		return ResponseEntity.ok().body(obj);
+		List<Pessoa> list = service.findAll();
+		List<PessoaDTO> listDTO = list.stream().map(obj -> new PessoaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	
